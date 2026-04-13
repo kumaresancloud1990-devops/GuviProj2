@@ -1,91 +1,196 @@
-DevOps Practice Project – Dist Directory
+# 🚀 Trend Application Deployment using CI/CD (DevOps Project)
 
-This repository contains the production-ready build files (dist folder) for DevOps practice and deployment exercises.
+## 📌 Project Overview
 
-It is intentionally structured to help learners focus on CI/CD pipelines, hosting, containerization, and infrastructure setup rather than application development.
+This project demonstrates a complete **CI/CD pipeline** to deploy a React application into a production-ready Kubernetes environment using modern DevOps tools.
 
-📁 What This Repository Contains
+The pipeline automates:
 
-dist/ – Compiled and production-ready static files
+* Build
+* Dockerization
+* Image push
+* Deployment to Kubernetes (EKS)
 
-HTML
+---
 
-CSS
+## 🛠️ Tech Stack
 
-JavaScript
+* Frontend: React
+* CI/CD: Jenkins
+* Containerization: Docker
+* Container Registry: DockerHub
+* Infrastructure: Terraform
+* Orchestration: Kubernetes (AWS EKS)
+* Monitoring: Prometheus + Grafana
+* Version Control: GitHub
 
-Assets (images, fonts, etc.)
+---
 
-These files are ready to deploy to:
+## 📂 Repository
 
-Web servers (Nginx / Apache)
+GitHub Repo:
+https://github.com/kumaresancloud1990-devops/GuviProj2
 
-Cloud platforms (AWS S3, Azure Blob, GCP Storage)
+---
 
-Containerized environments (Docker + Nginx)
+## ⚙️ Project Architecture
 
-Kubernetes clusters
+GitHub → Jenkins → Docker → DockerHub → AWS EKS → Kubernetes → Grafana Monitoring
 
-CI/CD pipeline demonstrations
+---
 
-🎯 Purpose of This Repository
+## 🔄 CI/CD Pipeline Flow
 
-This repository is designed for:
+1. Developer pushes code to GitHub
+2. GitHub Webhook triggers Jenkins pipeline
+3. Jenkins:
 
-DevOps beginners
+   * Clones repository
+   * Builds Docker image
+   * Pushes image to DockerHub
+   * Deploys to Kubernetes (EKS)
+4. Application exposed via LoadBalancer
+5. Monitoring via Grafana dashboard
 
-CI/CD practice
+---
 
-Deployment pipeline testing
+## 🐳 Docker Setup
 
-Docker & Kubernetes deployment exercises
+### Build Image
 
-Web server configuration practice
+```bash
+docker build -t kumaresankarana/trend-app .
+```
 
-Reverse proxy and load balancer setup
+### Run Container
 
-The goal is to simulate real-world deployment scenarios using already built application files.
+```bash
+docker run -d -p 3000:3000 kumaresankarana/trend-app
+```
 
-❓ Why is there NO package.json?
+---
 
-You may notice that this repository does not include:
+## ☁️ Terraform Setup
 
-package.json
+### Initialize Terraform
 
-node_modules
+```bash
+terraform init
+```
 
-Source code (src/)
+### Apply Infrastructure
 
-Build tools configuration
+```bash
+terraform apply
+```
 
-✅ Reason:
+Resources Created:
 
-This repository only contains the final production build output (dist), not the development source code.
+* VPC
+* Subnets
+* EC2 (Jenkins)
+* IAM Roles
+* Security Groups
 
-In a typical project:
+---
 
-Developers write source code.
+## ☸️ Kubernetes Deployment
 
-The project is built using tools like:
+### Apply Deployment
 
-Node.js
+```bash
+kubectl apply -f deployment.yaml
+```
 
-Webpack
+### Apply Service
 
-Vite
+```bash
+kubectl apply -f service.yaml
+```
 
-React (or other frameworks)
+---
 
-A dist/ folder is generated.
+## 🔗 Access Application
 
-Only the production build is deployed to servers.
+```bash
+kubectl get svc
+```
 
-This repository represents step 4 only.
+Open:
 
-Since this is already the compiled output:
+```
+http://<EXTERNAL-IP>
+```
 
-No dependencies are required
+---
 
-No build process is required
+## 🔄 Jenkins Pipeline
 
-No package.json is needed
+### Pipeline Stages:
+
+* Clone
+* Build Docker Image
+* Push to DockerHub
+* Deploy to Kubernetes
+
+---
+
+## 🔔 GitHub Webhook
+
+Configured webhook to trigger Jenkins automatically on every commit.
+
+---
+
+## 📊 Monitoring Setup
+
+Monitoring implemented using:
+
+* Prometheus
+* Grafana
+
+### Access Grafana
+
+```bash
+kubectl get svc monitoring-grafana
+```
+
+Open:
+
+```
+http://<EXTERNAL-IP>
+```
+
+---
+
+## 🔐 Grafana Credentials
+
+```bash
+kubectl get secret monitoring-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+```
+
+---
+
+## 📸 Screenshots (Add Here)
+
+* Jenkins Pipeline Success
+* DockerHub Image
+* EKS Nodes
+* Application Output
+* Grafana Dashboard
+
+---
+
+## 🧠 Key Learnings
+
+* End-to-end CI/CD pipeline implementation
+* Kubernetes deployment automation
+* AWS EKS cluster setup
+* Docker image lifecycle management
+* Monitoring using Prometheus & Grafana
+
+---
+
+## 👨‍💻 Author
+
+Kumaresan Vijayakumar
+.
