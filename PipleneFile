@@ -1,0 +1,45 @@
+Pipe Line Coding:
+pipeline {
+    agent any
+    environment {
+        DOCKER_IMAGE = "kumaresankarana/trend-app"
+        AWS_REGION = "ap-south-1"
+        CLUSTER_NAME = "trend-cluster"
+    }
+    stages {
+        stage('Clone') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/kumaresancloud1990-devops/GuviProj2.git'
+            }
+        }
+        stage('Build Image') {
+            steps {
+                sh 'docker build -t $DOCKER_IMAGE .'
+            }
+        }
+        stage('Push Image') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'DockerHubCredentials',
+                    usernameVariable: 'USER',
+                    passwordVariable: 'PASS'
+                )]) {
+                    sh '''
+                    echo $PASS | docker login -u $USER --password-stdin
+                    docker push $DOCKER_IMAGE
+                    '''
+                }
+            }
+        }
+        stage('Deploy to K8s') {
+            steps {
+                sh '''
+                aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+                kubectl apply -f deployment.yaml
+                kubectl apply -f service.yaml
+                '''
+            }
+        }
+    }
+}
